@@ -1,0 +1,15 @@
+[Unit]
+Description=Stream webcam service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+EnvironmentFile=-/etc/default/stream-video
+ExecStart=/usr/bin/gst-launch-1.0 -v rpicamsrc bitrate=1000000 ! 'video/x-h264,width=1280,height=720' ! queue ! rtph264pay config-interval=1 pt=96 ! udpsink host=${IP} port=${PORT} sync=false
+
+[Install]
+WantedBy=multi-user.target

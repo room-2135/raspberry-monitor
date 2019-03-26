@@ -1,0 +1,15 @@
+[Unit]
+Description=Stream microphone service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+EnvironmentFile=-/etc/default/stream-audio
+ExecStart=/usr/bin/gst-launch-1.0 audiotestsrc ! audioconvert ! audioresample ! alawenc ! rtppcmapay max-ptime=20000000 ! udpsink host=${IP} port=${PORT}
+
+[Install]
+WantedBy=multi-user.target

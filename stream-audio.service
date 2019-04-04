@@ -9,7 +9,7 @@ Restart=always
 RestartSec=1
 User=pi
 EnvironmentFile=-/etc/default/stream-audio
-ExecStart=/usr/bin/gst-launch-1.0 audiotestsrc ! audioconvert ! audioresample ! alawenc ! rtppcmapay max-ptime=20000000 ! udpsink host=${IP} port=${PORT}
+ExecStart=/usr/bin/gst-launch-1.0 alsasrc device=hw:1,0 ! audio/x-raw,width=16,depth=16,rate=44100,channel=1 ! queue !  audioconvert ! audioresample ! alawenc ! rtppcmapay max-ptime=20000000 ! udpsink host=${IP} port=${PORT}
 
 [Install]
 WantedBy=multi-user.target
